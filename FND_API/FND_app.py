@@ -16,8 +16,10 @@ def news_analyzer(news_tittle, news_body):
     transformed_data = data_normalization(news_tittle, news_body)
     answer = transformed_data
     # answer = our_model_name.predict(transformed_data)
+    # true == legitimate news
+    # false == fake news
 
-    return f"The news is {answer}"
+    return f"The news is ===== {answer}"
 
 
 # the data_normalization function clean and normalize the data as
@@ -28,6 +30,7 @@ def data_normalization(news_title, news_body):
     final_clean_title = delete_stop_words(clean_title)
     final_clean_body_text = delete_stop_words(clean_body_text)
     standardized_data = f"{final_clean_title} {final_clean_body_text}"
+    standardized_data = lower_case(standardized_data)
     return standardized_data
 
 
@@ -57,6 +60,11 @@ def delete_stop_words(text):
     list_significant_words = "".join(significant_word)
     return list_significant_words
 
+def lower_case(text):
+    lower_case_text = text.lower()
+    return lower_case_text
+
+
 
 with gr.Blocks() as FND_app:
     tittle_news = gr.Textbox(label="Tittle_news")
@@ -72,20 +80,3 @@ with gr.Blocks() as FND_app:
 
 FND_app.launch()
 
-# **************************************************************
-# import gradio as gr
-
-
-# def greet(name, is_morning, temperature):
-#     salutation = "Good morning" if is_morning else "Good evening"
-#     greeting = f"{salutation} {name}. It is {temperature} degrees today"
-#     celsius = (temperature - 32) * 5 / 9
-#     return greeting, round(celsius, 2)
-
-
-# demo = gr.Interface(
-#     fn=greet,
-#     inputs=["text", "checkbox", gr.Slider(0, 100)],
-#     outputs=["text", "number"],
-# )
-# demo.launch()
